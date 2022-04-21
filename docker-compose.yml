@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+
+  frontend:
+    build: frontend
+    container_name: burger_parcel
+    command: ./node_modules/.bin/parcel build bundles-src/index.js --dist-dir ./bundles --public-url "./"
+    volumes:
+      - /home/yulia/docker/bundles:/frontend/bundles
+    ports:
+      - "3000:3000"
+
+  backend:
+    build: backend
+    container_name: burger_django
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - /home/yulia/docker/bundles:/backend/bundles
+      - /home/yulia/docker/media:/backend/media
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+
