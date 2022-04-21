@@ -1,0 +1,66 @@
+{% extends 'base_restaurateur_page.html' %}
+
+{% block title %}Необработанные заказы | Star Burger{% endblock %}
+
+{% block content %}
+  <center>
+    <h2>Необработанные заказы</h2>
+  </center>
+
+  <hr/>
+  <br/>
+  <br/>
+  <div class="container">
+   <table class="table table-responsive">
+    <tr>
+      <th>ID заказа</th>
+      <th>Статус заказа</th>
+      <th>Стоимость заказа</th>
+      <th>Способ оплаты</th>
+      <th>Клиент</th>
+      <th>Телефон</th>
+      <th>Адрес доставки</th>
+      <th>Рестораны</th>
+      <th>Страница заказа</th>
+    </tr>
+
+    {% for order in orders %}
+      <tr>
+        <td>{{order.id}}</td>
+        <td>{{order.status}}</td>
+        <td>{{order.total_cost}} руб.</td>
+        <td>
+          {% if order.payment_method %}
+            {{order.payment_method}} руб.
+          {% else %}
+            Не указан
+          {% endif %}
+        </td>
+        <td>{{order.firstname}} {{order.lastname}}</td>
+        <td>{{order.phonenumber}}</td>
+        <td>{{order.address}}</td>
+        <td>
+          <details>
+            <summary style="display: revert;">Варианты</summary>
+              {% if order.available_restaurants %}
+                {% for restaurant in order.available_restaurants %}
+                  <p><strong>{{restaurant.name}}</strong></p>
+                  {% if restaurant.distance %}
+                    <p><em>Расстояние {{restaurant.distance|floatformat:"-2"}} км</em></p>
+                  {% else %}
+                    <p><em>Не удалось определить расстояние</em></p>
+                  {% endif %}
+                  <p>{{restaurant.contact_phone}}</p>
+                  <p>{{restaurant.address}}</p>
+                {% endfor %}
+              {% else %}
+                <p>Не удалось найти ресторан, который может приготовить весь заказ</p>
+              {% endif %}
+          </details>
+        </td>
+        <td><a href="{% url 'admin:foodcartapp_order_change' order.id %}?next={{request.get_full_path|urlencode}}">Редактировать</a></td>
+      </tr>
+    {% endfor %}
+   </table>
+  </div>
+{% endblock %}
