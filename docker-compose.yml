@@ -2,6 +2,18 @@ version: "3.9"
 
 services:
 
+  database:
+    image: postgres
+    container_name: burger_db
+    volumes:
+      - psql_db:/var/lib/postgresql/data/
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_DB=star-burger
+    env_file:
+      - ./.env_db
+
   frontend:
     build: frontend
     container_name: burger_parcel
@@ -18,8 +30,15 @@ services:
     volumes:
       - /home/yulia/docker/bundles:/backend/bundles
       - /home/yulia/docker/media:/backend/media
+    environment:
+      - POSTGRES_NAME=star-burger
     ports:
       - "8000:8000"
     env_file:
       - ./.env
+      - ./.env_db
+    depends_on:
+      - database
 
+volumes:
+  psql_db:
