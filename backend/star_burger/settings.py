@@ -2,7 +2,6 @@ import os
 
 from environs import Env
 
-# from git import Repo
 import rollbar
 
 env = Env()
@@ -130,8 +129,6 @@ GEOCODER_TOKEN = env('GEOCODER_TOKEN')
 
 ROLLBAR_TOKEN = env('ROLLBAR_TOKEN', '')
 ROLLBAR_ENV_LABEL = env('ROLLBAR_ENV_LABEL', 'production')
-# local_repo = Repo(path=BASE_DIR)
-# local_branch = local_repo.active_branch.name
 ROLLBAR = {
     'access_token': ROLLBAR_TOKEN,
     'environment': f'{ROLLBAR_ENV_LABEL}',
