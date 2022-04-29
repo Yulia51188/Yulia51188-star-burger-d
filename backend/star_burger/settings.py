@@ -14,7 +14,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', True)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost', '0.0.0.0'])
 
 INSTALLED_APPS = [
     'foodcartapp.apps.FoodcartappConfig',
@@ -128,7 +128,7 @@ STATICFILES_DIRS = [
 GEOCODER_TOKEN = env('GEOCODER_TOKEN')
 
 ROLLBAR_TOKEN = env('ROLLBAR_TOKEN', '')
-ROLLBAR_ENV_LABEL = env('ROLLBAR_ENV_LABEL', 'production')
+ROLLBAR_ENV_LABEL = env('ROLLBAR_ENV_LABEL', 'development')
 ROLLBAR = {
     'access_token': ROLLBAR_TOKEN,
     'environment': f'{ROLLBAR_ENV_LABEL}',
