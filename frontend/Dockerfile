@@ -7,9 +7,9 @@ WORKDIR ${APP_DIR}
 COPY package*.json ./
 RUN npm ci --dev
 
-COPY . ./app
+COPY . .
 EXPOSE 3000
 
-CMD ["./node_modules/.bin/parcel", "build", "./app/bundles-src/index.js", "--dist-dir", "./app/bundles", "--public-url", "./"]
+CMD ["./node_modules/.bin/parcel", "build", "./bundles-src/index.js", "--dist-dir", "./bundles", "--public-url", "./"]
 
 

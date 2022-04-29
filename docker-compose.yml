@@ -17,21 +17,21 @@ services:
   frontend:
     build: frontend
     container_name: burger_parcel
-    command: ./node_modules/.bin/parcel watch ./app/bundles-src/index.js --dist-dir ./app/bundles --public-url "./"
+    command: ./node_modules/.bin/parcel watch ./bundles-src/index.js --dist-dir bundles --public-url "./"
     volumes:
-      - ./bundles:/frontend/app/bundles
-      - ./frontend:/frontend/app
+      - ./bundles:/frontend/bundles
+      - ./frontend:/frontend
     ports:
       - "3000:3000"
 
   backend:
     build: backend
     container_name: burger_django
-    command: python ./app/manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./bundles:/backend/app/bundles
-      - ./media:/backend/app/media
-      - ./backend:/backend/app
+      - ./bundles:/backend/bundles
+      - ./media:/backend/media
+      - ./backend:/backend
     environment:
       - POSTGRES_NAME=star-burger
     ports:
