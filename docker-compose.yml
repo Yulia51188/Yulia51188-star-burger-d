@@ -12,12 +12,12 @@ services:
     environment:
       - POSTGRES_DB=star-burger
     env_file:
-      - ./.env_db
+      - ./.env
 
   frontend:
     build: frontend
     container_name: burger_parcel
-    command: ./node_modules/.bin/parcel build bundles-src/index.js --dist-dir ./bundles --public-url "./"
+    command: ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir ./bundles --public-url "./"
     volumes:
       - /home/yulia/docker/bundles:/frontend/bundles
     ports:
@@ -36,7 +36,6 @@ services:
       - "8000:8000"
     env_file:
       - ./.env
-      - ./.env_db
     depends_on:
       - database
 
