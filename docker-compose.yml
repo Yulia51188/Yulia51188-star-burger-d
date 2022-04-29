@@ -19,7 +19,7 @@ services:
     container_name: burger_parcel
     command: ./node_modules/.bin/parcel watch bundles-src/index.js --dist-dir ./bundles --public-url "./"
     volumes:
-      - /home/yulia/docker/bundles:/frontend/bundles
+      - ./bundles:/frontend/bundles
     ports:
       - "3000:3000"
 
@@ -28,8 +28,8 @@ services:
     container_name: burger_django
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - /home/yulia/docker/bundles:/backend/bundles
-      - /home/yulia/docker/media:/backend/media
+      - ./bundles:/backend/bundles
+      - ./media:/backend/media
     environment:
       - POSTGRES_NAME=star-burger
     ports:
