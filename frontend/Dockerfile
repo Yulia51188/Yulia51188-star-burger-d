@@ -12,6 +12,4 @@ EXPOSE 3000
 
 CMD ["./node_modules/.bin/parcel", "build", "bundles-src/index.js", "--dist-dir", "./bundles", "--public-url", "./"]
 
-# Run with
-# docker run -d --name burger-container -v /home/yulia/docker/bundles:/frontend/bundles --network star-burger burger_front
 
