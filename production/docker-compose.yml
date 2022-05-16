@@ -8,7 +8,7 @@ services:
     volumes:
       - psql_db:/var/lib/postgresql/data/
     ports:
-      - "5431:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_DB=star-burger
     env_file:
@@ -29,26 +29,26 @@ services:
       - ../media:/backend/media
     environment:
       - POSTGRES_NAME=star-burger
-    # expose:
-    #   - 8000
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
+    # ports:
+    #   - "8000:8000"
     env_file:
       - ./.env
     depends_on:
       - database
 
-  # nginx:
-  #   build: ./nginx
-  #   container_name: burger_nginx
-  #   volumes:
-  #     - ../media:/media
-  #     - ../static:/static
-  #   ports:
-  #     - 1337:80
-  #   depends_on:
-  #     - backend
-  #     - frontend
+  nginx:
+    build: ./nginx
+    container_name: burger_nginx
+    volumes:
+      - ../media:/media
+      - ../static:/static
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+      - frontend
 
 volumes:
   psql_db:
