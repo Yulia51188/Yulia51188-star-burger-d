@@ -18,8 +18,8 @@ services:
     build: ../frontend
     container_name: burger_parcel
     command: ./node_modules/.bin/parcel build ./bundles-src/index.js --dist-dir ./bundles --public-url "./"
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
 
   backend:
     build: ../backend
@@ -29,8 +29,10 @@ services:
       - ../media:/backend/media
     environment:
       - POSTGRES_NAME=star-burger
-    expose:
-      - 8000
+    # expose:
+    #   - 8000
+    ports:
+      - "8000:8000"
     env_file:
       - ./.env
     depends_on:
