@@ -10,4 +10,8 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt
 COPY . .
 
+ENV SECRET_KEY=REPLACE_ME
+ENV GEOCODER_TOKEN=REPLACE_ME
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 8000
