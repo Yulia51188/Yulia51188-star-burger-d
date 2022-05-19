@@ -63,7 +63,7 @@ docker compose build
     ...
 ```
 
-- Создайте файл с переменными окружения.
+- Создайте файл с переменными окружения в каталоге проекта
 
   - `GEOCODER_TOKEN` - токен для [геокодера Яндекс](https://developer.tech.yandex.ru/services/), чтобы определять расстояние от ресторана до адреса. Обязательная переменная окружения.
   - `ROLLBAR_TOKEN` - токен для сервиса [Rollbar](https://rollbar.com/), чтобы получать сообщения об ошибках, исключая HTTP404. Обязательная переменная окружения.
@@ -93,15 +93,30 @@ docker exec -it burger_django python manage.py load_initial_data
 
 ## Как запустить prod-версию сайта
 
+### Первоначальное развертывание сайта
+
+- Установите на сервере:
+    - [Git](https://github.com/git-guides/install-git)
+    - [Docker и Docker Compose](https://docs.docker.com/engine/install/)
+    - Настройте [проброс ssh ключа](https://docs.github.com/en/developers/overview/using-ssh-agent-forwarding) для взаимодействия с GitHub при обновлении кода  в репозитории
+
+- Склонируйте проект на свой сервер
 
 ```sh
+cd /opt/
+git clone git@github.com:Yulia51188/star-burger-d.git
+git pull
+```
 
+- Соберите докер образы фронтенда, бэкэнда и базы данных для продакш-версии
 
-
+```sh
+cd /opt/star-burger-d/production/
+docker compose build
 
 ```
 
-Настроить бэкенд: создать файл `.env` в каталоге `star_burger/` со следующими настройками:
+- Создать файл `.env` в каталоге `./production/` со следующими настройками:
 
 - `DEBUG` — флаг режима отладки. Поставьте `False` для боевого сервера. Если не указан, то True.
 - `SECRET_KEY` — секретный ключ проекта. Он отвечает за шифрование на сайте. Например, им зашифрованы все пароли на вашем сайте. Не стоит использовать значение по-умолчанию, **замените на своё**.
@@ -112,14 +127,63 @@ docker exec -it burger_django python manage.py load_initial_data
 - `DATABASE_URL` - конфигурация БД, указывается в виде URL, см. [примеры](https://github.com/jacobian/dj-database-url#id7). Если значение не указано, то используется движок `SQLite`, имя файла `db.sqlite`. Для использования `PostgreSQL` в `requirements.txt` добавлена библиотека [psycorg2](https://pypi.org/project/psycopg2/).
 - `POSTGRES_USER`, `POSTGRES_PASSWORD` - имя пользователя и пароль для авторизации в БД.
 
+- Запустить контейнеры
+
+```
+docker compose up -d
+```
+
+- Скопируйте файлы статики в общую папку
+
+```sh
+mkdir static
+docker cp burger_django:/backend/staticfiles/. ../static/
+docker cp burger_parcel:/frontend/bundles/. ../static/
+```
+
+- Примените к базе данных миграции и создайте аккаунт администратора
+
+```sh
+docker exec -it burger_django python manage.py migrate
+docker exec -it burger_django python manage.py createsuperuser
+```
+
+- Соберите образ контейнера с nginx
+
+```sh
+docker build -t burger-server ./nginx/
+````
+
+- Запустите контейнер nginx с необходимыми настройками
+```sh
+docker run -d -p 80:80 --network production_nginx_network -v /opt/star-burger-d/media:/media -v /opt/star-burger-d/static --name burger_nginx burger-server
+```
+
+- Для обечения бесперебойной работы сайта настройте автоматический перезапуск, выпуск сертификата, очистку устаревших сессий и др.
+
+
+### Обновление кода
+
+При обновлении кода запустите скрипт для пересборки и перезапуска контейнеров сайта
+
+- в первый раз настройте права на запуск файла
+
+```sh
+chmod +x deploy.sh
+```
+- запустите скрипт, находясь в директории `production`
+```sh
+
+./deploy.sh
+````
 
 ## Информация для проверяющего
 
-- домен [yulyas-burgers.tk](https://yulyas-burgers.tk/)
-- IP [77.223.96.144](https://77.223.96.144/)
+- домен [yulyas-burgers.tk](https://docker-burgers.tk/)
+- IP [77.223.96.144](https://80.249.149.214/)
 - имя пользователя - `root`
 - порт ssh, стандартный - `22`
-- скрипт для деплоя `/opt/star-burger/starburger_deploy.sh`
+- скрипт для деплоя `/opt/star-burger-d/production/deploy.sh`
 
 
 ## Цели проекта
