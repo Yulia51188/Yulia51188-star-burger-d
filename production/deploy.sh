@@ -9,7 +9,7 @@ docker cp burger_parcel:/frontend/bundles/. ../static/
 #Release
 docker exec -it burger_django python manage.py migrate --noinput
 systemctl restart docker-burger.service
-systemctl reload nginx.service
+docker exec -it burger_nginx nginx -s reload
 #Logging to Rollbar
 REVISION=$(git rev-parse --short HEAD)
 ROLLBAR_TOKEN=$(cat .env | grep ROLLBAR_TOKEN | cut -d "=" -f 2)
