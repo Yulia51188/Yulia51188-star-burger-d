@@ -173,8 +173,8 @@ systemctl reload nginx
 
 ## Информация для проверяющего
 
-- домен [yulyas-burgers.tk](https://docker-burgers.tk/)
-- IP [77.223.96.144](https://80.249.149.214/)
+- домен [https://docker-burger.tk/](https://docker-burger.tk/)
+- IP [80.249.149.214](https://80.249.149.214/)
 - имя пользователя - `root`
 - порт ssh, стандартный - `22`
 - скрипт для деплоя `/opt/star-burger-d/production/deploy.sh`
