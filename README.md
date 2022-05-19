@@ -148,18 +148,7 @@ docker exec -it burger_django python manage.py migrate
 docker exec -it burger_django python manage.py createsuperuser
 ```
 
-- Соберите образ контейнера с nginx
-
-```sh
-docker build -t burger-server ./nginx/
-````
-
-- Запустите контейнер nginx с необходимыми настройками
-```sh
-docker run -d -p 80:80 --network production_nginx_network -v /opt/star-burger-d/media:/media -v /opt/star-burger-d/static --name burger_nginx burger-server
-```
-
-- Для обечения бесперебойной работы сайта настройте автоматический перезапуск, выпуск сертификата, очистку устаревших сессий и др.
+- Для обечения бесперебойной работы сайта настройте раздачу статики, например, с помощью nginx, выпуск и перевыпуск сертификата, очистку устаревших сессий и др.
 
 
 ### Обновление кода
@@ -176,6 +165,11 @@ chmod +x deploy.sh
 
 ./deploy.sh
 ````
+
+*Внимание* - в деплойном скрипте вызывается команда перезапуска Nginx - замените или закомментируйте ее, если не используете!
+```sh
+systemctl reload nginx
+```
 
 ## Информация для проверяющего
 
