@@ -35,13 +35,13 @@ cd star-burger-d
 ```sh
 $ docker --version
 Docker version 20.10.14, build a224086
-$ docker-compose --version
+$ docker compose version
 docker-compose version 1.27.4, build 40524192
 ```
 
 - Соберите Docker образы с помощью команды:
 ```sh
-docker-compose build
+docker compose build
 ```
 
 - Контейнеры будут использовать монтированные внешние папки для медиа-файлов и файлов верстки. Пропишите свои пути в файле `docker-compose.yaml`  вместо `./bundles` и `./media` или создайте в текущей директории папки `bundles` и `media`.
@@ -74,7 +74,7 @@ docker-compose build
 - Запустите контейнеры для фронтенда, базы данных и бэкэнда:
 
 ```sh
-docker-compose up -d
+docker compose up -d
 ```
 
 - Сделайте первоначальные настройки базы данных и загрузите в нее тестовые данные, если необходимо:
